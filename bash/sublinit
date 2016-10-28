@@ -1,0 +1,3 @@
+#!/bin/bash
+# enables Sublime Text 2 "subl" terminal command
+sudo ln -s "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl" /usr/bin/subl
