@@ -1,0 +1,34 @@
+#!/bin/bash
+##
+ # Set up workflow for deploying a site using Docker
+ #
+ # configuration and Docker files go in:  /home/docker/{sitename}
+ # source code goes in:                   /home/git/{$sitename}
+ # unpacked source code goes in:          /var/www/{sitename}
+ #
+ # usage:
+ #    $ setupsite example.com
+##
+sitename=$1
+srcdir="/home/git/{$sitename}"
+appdir="/var/www/{$sitename}"
+destdir="/home/docker/{$sitename}"
+
+# setup directories
+mkdir $srcdir $destdir $appdir
+chown -R git:www-data $srcdir $appdir
+chgrp -R sudo $destdir
+
+# copy Docker files from peter's scripts repo
+cp -a "/home/peter/scripts/docker/{$sitename}" $destdir
+
+# setup Git repo
+cd $srcdir
+git init --bare
+# copy auto deployment hook
+cat /home/peter/scripts/ruby/git-deploy-website > $srcdir/hooks/post-receive
+chown git:www-data $srcdir/hooks/post-receive
+chmod +x $srcdir/hooks/post-receive
+
+# symlink source code
+ln -s $appdir $destdir/src
