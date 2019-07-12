@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Copies dotfiles for various programs
+# into git repo at $DESTDIR
+DESTDIR=~/dev/dotfiles/;
+if [ ! -d $DESTDIR ]; then
+  echo "Destination directory for dotfiles \"$DESTDIR\" does not exist";
+  exit 1;
+fi
+
+# show output
+alias cp="cp -v"
+
+# Aliases
+cp ~/.config/.aliases $DESTDIR;
+
+# Fish
+cp ~/.config/fish/config.fish "${DESTDIR}fish/";
+cp -R ~/.config/fish/functions "${DESTDIR}fish/";
+
+# Bash
+cp ~/.profile "${DESTDIR}bash/";
+cp ~/.bashrc "${DESTDIR}bash/";
+cp ~/.bash_profile "${DESTDIR}bash/";
+
+# tmux
+cp ~/.tmux.conf "${DESTDIR}tmux/";
+
+# vim
+cp ~/.vimrc "${DESTDIR}vim/";
+
+# git
+cp ~/.gitconfig "${DESTDIR}git/";
+cp ~/.gitignore_global "${DESTDIR}git/";
+
+echo "Completed";
