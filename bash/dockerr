@@ -1,0 +1,83 @@
+#!/bin/bash
+#
+# dockerr
+# A layer on top of 'docker' program for shortcuts
+
+help() {
+    echo "Usage: dockerr command 
+Commands:
+    start : Start Docker for Mac app
+    quit : Quit Docker for Mac app
+    run php : Run php-apache container
+    stop : Stop all running containers
+    cleanup : Remove all stopped containers
+    help : Show list of available commands"
+}
+
+# Start Docker app for Mac
+start() {
+    dockerIsRunning="$(ps aux | grep Docker.app | wc -l)"
+    if [ $dockerIsRunning -gt 1 ]
+    then
+        echo "Docker is already running."
+    else
+        open -a /Users/peter/Applications/Docker.app
+        echo "Docker started."
+    fi 
+}
+
+# Run php-apache container
+run_php() {
+  echo "Starting php:7.2-apache container"
+  docker run -d -p 80:80 --name "$(basename $PWD)" -v "$PWD":/var/www/html php:7.2-apache
+}
+
+# Remove all stopped containers
+cleanup() {
+  docker rm "$(docker ps -a -q)"
+  echo "All stopped containers removed."
+}
+
+# main
+while [ "$1" != "" ]; do
+    case $1 in        
+
+        start)                  start 
+                                exit
+                                ;;
+
+        # Quit Docker for Mac app
+        quit | -q)              osascript -e 'quit app "Docker"'
+                                exit
+                                ;;
+
+        # Start a container in this directory
+        run )                   shift
+                                container=$1
+                                if [ "$container" = "php" ]
+                                then
+                                  run_php
+                                fi
+                                exit
+                                ;;
+
+        # Stop all running containers
+        stop)                   docker stop "$(docker ps -a -q)"
+                                echo "All containers stopped."
+                                exit
+                                ;;
+
+        cleanup )               cleanup
+                                exit
+                                ;;
+
+        -h | --help )           help 
+                                exit
+                                ;;
+
+        * )                     help 
+                                exit 1
+    esac
+    shift
+done
+
