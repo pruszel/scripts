@@ -10,6 +10,7 @@ Commands:
     quit : Quit Docker for Mac app
     run php : Run php-apache container
     stop : Stop all running containers
+    shutdown : Stop all and quit Mac app
     cleanup : Remove all stopped containers
     help : Show list of available commands"
 }
@@ -67,6 +68,12 @@ while [ "$1" != "" ]; do
                                 exit
                                 ;;
 
+        shutdown )              docker stop "$(docker ps -a -q)"
+                                osascript -e 'quit app "Docker"'
+                                echo "All containers stopped. Docker for Mac quit."
+                                exit
+                                ;;
+
         cleanup )               cleanup
                                 exit
                                 ;;
@@ -80,4 +87,6 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
+
+help
 
