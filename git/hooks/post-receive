@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+# !! required !!
+# setup variables
+#
+DOCROOT='/var/www/html/'
+TESTROOT='/var/www/test/'
+if [[ -z DOCROOT ]];
+then
+    echo "
+    ERROR! Push rejected.
+    -------------------------
+    DOCROOT not set in ${0}
+
+    Fix and try again
+    "
+    exit 1
+fi
+
+while read oldrev newrev ref
+do
+    # Deploy testing branch
+    if [[ $ref =~ .*/develop$ ]];
+    then
+        echo "Develop ref received. Deploying develop branch to testing..."
+        git --work-tree="$TESTROOT" --git-dir=/home/git checkout develop -f
+    # Deploy master branch
+    elif [[ $ref =~ .*/master$ ]];
+    then
+        echo "Master ref received.  Deploying master branch to production..."
+        git --work-tree="$DOCROOT" --git-dir=/home/git/ checkout master -f
+    else
+        echo "Ref $ref successfully received."
+    fi
+done
