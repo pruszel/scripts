@@ -12,7 +12,7 @@ fi
 alias cp="cp -v"
 
 # Aliases
-cp ~/.config/.aliases $DESTDIR;
+cp ~/.aliases $DESTDIR;
 
 # Fish
 cp ~/.config/fish/config.fish "${DESTDIR}fish/";
@@ -24,7 +24,7 @@ cp ~/.bashrc "${DESTDIR}bash/";
 cp ~/.bash_profile "${DESTDIR}bash/";
 
 # tmux
-cp ~/.tmux.conf "${DESTDIR}tmux/";
+# cp ~/.tmux.conf "${DESTDIR}tmux/";
 
 # vim
 cp ~/.vimrc "${DESTDIR}vim/";
