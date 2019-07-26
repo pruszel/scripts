@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+rsync -rvh --info=progress2 /home/peter/torrents/completed/Movies/ peter@10.0.69.2:/media/peter/media/Movies;
+rsync -rvh --info=progress2 /home/peter/torrents/completed/TV/ peter@10.0.69.2:/media/peter/media/TV;
