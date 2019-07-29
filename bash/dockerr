@@ -33,10 +33,14 @@ run_php() {
   docker run -d -p 80:80 --name "$(basename $PWD)" -v "$PWD":/var/www/html php:7.2-apache
 }
 
-# Remove all stopped containers
+# Stop all containers
+# Remove all containers
+# Remove all untagged images
 cleanup() {
-  docker rm "$(docker ps -a -q)"
-  echo "All stopped containers removed."
+  docker stop $(docker ps -aq)
+  docker rm $(docker ps -aq)
+  docker rmi $(docker images | grep "^<none>" | awk "{print \$3}") 
+  echo "All containers and images cleaned up."
 }
 
 # main
@@ -63,7 +67,7 @@ while [ "$1" != "" ]; do
                                 ;;
 
         # Stop all running containers
-        stop)                   docker stop "$(docker ps -a -q)"
+        stop)                   docker stop $(docker ps -aq)
                                 echo "All containers stopped."
                                 exit
                                 ;;
