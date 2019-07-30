@@ -37,10 +37,30 @@ run_php() {
 # Remove all containers
 # Remove all untagged images
 cleanup() {
-  docker stop $(docker ps -aq)
-  docker rm $(docker ps -aq)
-  docker rmi $(docker images | grep "^<none>" | awk "{print \$3}") 
-  echo "All containers and images cleaned up."
+  images="$(docker images | grep '^<none>' | awk '{print $3}' | sed '/^[[:space:]]*$/d')"
+  containers="$(docker ps -aq)"
+  nothingtodo=1
+
+  if [ ! -z "$containers" ]; then
+    echo "Stopping all containers..";
+    docker stop $containers
+  
+    echo -e "\nRemoving all containers..";
+    docker rm $containers
+    nothingtodo=0
+  fi;
+
+  if [ ! -z "$images" ]; then
+    echo -e "\nRemoving untagged images..";
+    docker rmi $images
+    nothingtodo=0
+  fi
+  
+  if [ $nothingtodo -gt 0 ]; then
+    echo -e "\nNothing to cleanup!"
+  else
+    echo -e "\nDone."
+  fi
 }
 
 # main
