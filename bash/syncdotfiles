@@ -8,27 +8,31 @@ if [ ! -d "$DESTDIR" ]; then
   exit 1;
 fi
 
+echo -e "Syncing dotfiles to $DESTDIR..\n";
+
+[ -f ~/.inputrc ] && cp -v ~/.inputrc $DESTDIR;
+
 # Aliases
-cp ~/.aliases $DESTDIR;
+[ -f ~/.aliases ] && cp -v ~/.aliases $DESTDIR;
+[ -f ~/.aliases ] && cp -v ~/.aliases.macos $DESTDIR;
 
 # Fish
-cp ~/.config/fish/config.fish "${DESTDIR}/fish/";
-cp -R ~/.config/fish/functions "${DESTDIR}/fish/";
+[ -f ~/.config ] && cp -v ~/.config/fish/config.fish "${DESTDIR}/fish/";
+[ -d ~/.config/fish/functions ] && cp -vR ~/.config/fish/functions "${DESTDIR}/fish/";
 
 # Bash
-cp ~/.profile "${DESTDIR}/bash/";
-cp ~/.bashrc "${DESTDIR}/bash/";
-cp ~/.bash_profile "${DESTDIR}/bash/";
+[ -f ~/.profile ] && cp -v ~/.profile "${DESTDIR}/bash/";
+[ -f ~/.bashrc ] && cp -v ~/.bashrc "${DESTDIR}/bash/";
+[ -f ~/.bash_profile ] && cp -v ~/.bash_profile "${DESTDIR}/bash/";
 
 # tmux
-# cp ~/.tmux.conf "${DESTDIR}/tmux/";
+[ -f ~/.tmux.conf ] && cp -v ~/.tmux.conf "${DESTDIR}/tmux/";
 
 # vim
-cp ~/.vimrc "${DESTDIR}/vim/";
-cp ~/.inputrc "${DESTDIR}/vim/";
+[ -f ~/.vimrc ] && cp -v ~/.vimrc "${DESTDIR}/vim/";
 
 # git
-cp ~/.gitconfig "${DESTDIR}/git/";
-cp ~/.gitignore_global "${DESTDIR}/git/";
+[ -f ~/.gitconfig ] && cp -v ~/.gitconfig "${DESTDIR}/git/";
+[ -f ~/.gitignore_global ] && cp -v ~/.gitignore_global "${DESTDIR}/git/";
 
-echo "Complete!";
+echo -e "\nComplete!";
