@@ -1,0 +1,11 @@
+#!/bin/bash
+torrentid=$1
+torrentname=$2
+torrentpath=$3
+
+TV_PATH="/media/sf_M_DRIVE/TV"
+
+if [[ $torrentpath == *"Movies"* ]]; then
+    mv -R "$torrentpath/$torrentname" ;
+fi
+
