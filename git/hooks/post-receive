@@ -1,35 +1,39 @@
-#!/bin/bash
+#!/usr/bin/env ruby
 #
-# !! required !!
-# setup variables
+# Deploy website files from a bare Git repository
 #
-DOCROOT='/var/www/html/'
-TESTROOT='/var/www/test/'
-if [[ -z DOCROOT ]];
-then
-    echo "
-    ERROR! Push rejected.
-    -------------------------
-    DOCROOT not set in ${0}
+# USAGE
+# 	1. put this executable in a bare Git repository's hooks/ directory
+#   2. this file must be named 'post-receive' in order for it to be run after a git commit is received
+#   3. specify in this file which branch should be deployed
+#
+# IMPORTANT:
+# 	the name of the directory with the Git repo 
+# 	and the name of the directory in /var/www/ must MATCH
+# 	ex. this directory: 	/home/git/google.com
+#       must have matching: /var/www/google.com
+#
 
-    Fix and try again
-    "
-    exit 1
-fi
+# TODO - specify which branch should be deployed
+DEPLOY_BRANCH = "master"
 
-while read oldrev newrev ref
-do
-    # Deploy testing branch
-    if [[ $ref =~ .*/develop$ ]];
-    then
-        echo "Develop ref received. Deploying develop branch to testing..."
-        git --work-tree="$TESTROOT" --git-dir=/home/git checkout develop -f
-    # Deploy master branch
-    elif [[ $ref =~ .*/master$ ]];
-    then
-        echo "Master ref received.  Deploying master branch to production..."
-        git --work-tree="$DOCROOT" --git-dir=/home/git/ checkout master -f
-    else
-        echo "Ref $ref successfully received."
-    fi
-done
+# read args from STDIN: "from_commit, to_commit, branch_name"
+from, to, branch = ARGF.read.split " "
+
+# only deploy specified branch
+unless (branch == DEPLOY_BRANCH)
+    puts "Received ref(#{to}) on branch '#{branch}'."
+    exit
+end
+
+# get destination directory for deploying files
+dirname = File.basename(File.expand_path("../", Dir.pwd))
+dest_dir = File.expand_path("/var/www/#{dirname}")
+unless Dir.exists?(dest_dir)
+	puts "Deployment failed! Destination directory '#{dest_dir}' does not exist."
+	exit 1
+end
+
+# deploy files
+`GIT_WORK_TREE="#{dest_dir}" git checkout -f #{DEPLOY_BRANCH}`
+puts "Deployed #{DEPLOY_BRANCH} ref(#{to}) to '#{dest_dir}'"
