@@ -1,0 +1,34 @@
+# Digital Ocean cloud-config script
+#
+# Setup box with peferred shell environment
+#
+users:
+  - name: root
+  - shell: /bin/zsh
+    ssh-authorized-keys:
+  - name: peter
+    groups: sudo, www-data
+    shell: /bin/zsh
+    ssh-authorized-keys:
+  - name: git
+    groups: www-data
+    ssh-authorized-keys:
+  - name: docker
+    groups: www-data
+chpasswd:
+  list: |
+    root:changeme
+    peter:changeme
+  expire: False
+packages:
+  - apache2
+  - git
+  - ruby-full
+  - openssl
+  - apt-transport-https
+  - ca-certificates
+runcmd:
+  - git clone https://github.com/peterlopez/scripts.git /home/peter/
+  - git clone https://github.com/peterlopez/dotfiles.git /home/peter/
+  - sed -i -e '/^PermitRootLogin/s/^.*$/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
+  - service ssh restart
