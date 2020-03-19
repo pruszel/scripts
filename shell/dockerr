@@ -1,7 +1,8 @@
 #!/bin/bash
-#
+##
 # dockerr
 # A layer on top of 'docker' program for shortcuts
+##
 
 help() {
     echo "Usage: dockerr command 
@@ -31,6 +32,11 @@ start() {
 run_php() {
   echo "Starting php:7.2-apache container"
   docker run -d -p 80:80 --name "$(basename $PWD)" -v "$PWD":/var/www/html php:7.2-apache
+}
+
+run_mysql() {
+  echo "Starting mysql container"
+  docker run -d -p 3306:3306 --name=mysql101 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=sandbox mysql
 }
 
 # Stop all containers

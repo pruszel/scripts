@@ -1,14 +1,13 @@
 #!/bin/bash
-
-# Copies dotfiles for various programs
-# into git repo at $DESTDIR
-DESTDIR="${HOME}/dev/dotfiles";
-if [ ! -d "$DESTDIR" ]; then
-  echo "Destination directory for dotfiles \"$DESTDIR\" does not exist";
+#
+# Sync dotfiles between 
+#
+if [ ! -d "$DOTFILES" ]; then
+  echo "\"$DOTFILES\" location not set.";
   exit 1;
 fi
 
-echo -e "Syncing dotfiles to $DESTDIR..\n";
+echo -e "Syncing dotfiles between $DESTDIR..\n";
 
 [ -f ~/.inputrc ] && cp -v ~/.inputrc $DESTDIR;
 
