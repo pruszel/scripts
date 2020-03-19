@@ -1,8 +1,0 @@
-#!/bin/bash
-torrentid=$1
-torrentname=$2
-torrentpath=$3
-
-LOGFILE="/home/peter/torrents.log"
-
-echo -e "Torrent Complete: " "$torrentname" "\t$torrentpath" >> LOGFILE
