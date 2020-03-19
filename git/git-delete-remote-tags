@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# Removes all tags from specified remote repository
+#
+# USAGE
+#	$ git-delete-remote-tags {remote}
+#
+
+# validate input args
+if [ "$#" -lt 1 ]; then
+   echo "Error! Must specify name of Git remote to delete tags from."
+   exit 1
+fi
+remote=$1
+
+# check that we are running inside a Git repo
+git status > /dev/null || echo "Error! Not in a Git repository."; exit 1;
+
+read -r -p "Are you sure you want to delete all tags from $remote? [y/n] " response
+if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] then
+	echo "Removing all tags from $remote...\n";
+    git ls-remote --tags $remote | awk '/^(.*)(\s+)(.*[a-zA-Z0-9])$/ {print ":" $2}' | xargs git push $remote;
+else
+	echo "Exiting..";
+fi
