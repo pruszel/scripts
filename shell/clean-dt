@@ -1,0 +1,5 @@
+#! /usr/bin/env zsh
+#
+# Cleans up (moves to trash) files in ~/Desktop folder
+#
+cd /Users/peter/Desktop && find * -exec /usr/local/bin/rmtrash '{}' \;
