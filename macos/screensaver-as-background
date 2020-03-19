@@ -1,0 +1,5 @@
+#! /usr/bin/env bash
+#
+# Sets Mac OS desktop background to currently configured screensaver
+#
+/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine -background

@@ -1,9 +1,11 @@
+#! /usr/bin/env bash
+#
 # There was a day where I have too many color schemes in iTerm2 and I want to remove them all.
 # iTerm2 doesn't have "bulk remove" and it was literally painful to delete them one-by-one.
-
-# iTerm2 save it's preference in ~/Library/Preferences/com.googlecode.iterm2.plist in a binary format
+#
+# iTerm2 saves it's preference in ~/Library/Preferences/com.googlecode.iterm2.plist in a binary format
 # What you need to do is basically copy that somewhere, convert to xml and remove color schemes in the xml files.
-
+#
 echo "Copying version of preferences into current directory for editing.."
 
 cd /tmp/
