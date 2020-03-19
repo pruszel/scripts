@@ -1,0 +1,64 @@
+#!/usr/bin/env zsh
+
+showHelpText() {
+cat << HELPTEXT
+Wrapper for Virtual Box's VBoxManage API
+
+USAGE
+  vm {command} {VM name}
+
+COMMANDS
+  start
+      Starts VM with GUI
+
+  headless 
+      Starts VM headless
+
+  stop
+      Powers down using ACPI power button
+
+  info
+      Shows information about particular VM
+
+  list
+      Lists all VMs
+
+  help
+      Show usage guide
+HELPTEXT
+}
+
+# Check input args
+COMMAND=$1
+VM_NAME=$2
+if [[ -z "$1" || -z "$2" ]] then
+    showHelpText;
+    exit;
+fi
+
+# Check VBoxManage installed on system
+if [[ -z "$(command -v VBoxManage)" ]] then
+    echo "Error: VBoxManage not installed.\n" >&2;
+    exit 1;
+fi
+
+# Run command
+case $COMMAND in
+    start )
+        echo "Starting $VM_NAME..";
+        VBoxManage startvm $VM_NAME;
+    ;;
+    headless )
+        echo "Starting $VM_NAME in headless mode..";
+        VBoxManage startvm $VM_NAME --type headless;
+    ;;
+    stop )
+        echo "Shutting down $VM_NAME..";
+        VBoxManage controlvm $VM_NAME acpipowerbutton;
+    ;;
+    info ) VBoxManage showvminfo $VM_NAME;
+    ;;
+    list ) VBoxManage list vms;
+    ;;
+    help ) showHelpText
+esac
