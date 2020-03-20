@@ -1,0 +1,45 @@
+#!/bin/bash
+#
+# Setup symlinks for dotfiles
+#
+# USAGE
+#	$ setup-dotfiles /path/to/dotfiles
+#
+
+# Get dotfiles directory as argument and check it
+DOTFILES="$1"
+[ ! -d "$DOTFILES" ] && echo "Error: dotfiles directory \"$DOTFILES\" does not exist." && exit 1;
+
+echo -e "Creating symlinks for dotfiles in $DOTFILES..\n";
+
+file_exists_error() {
+	echo "Alert: file already exists, skipping it. Delete the file and re-run script to setup symlink.";
+	echo -e "\t$1"
+}
+symlink_success() {
+	echo "Symlink created for $1."
+}
+
+#
+# If file exists skip creating link for it
+#
+[ -e $HOME/.inputrc ] && file_exists_error "~/.inputrc" || [ ln -s $DOTFILES/.inputrc $HOME/.inputrc -a symlink_success ".inputrc"];
+
+# aliases
+[ -e $HOME/.aliases ] && file_exists_error "~/.aliases" || [ ln -s $DOTFILES/.aliases $HOME/.aliases -a symlink_success ".aliases"];
+
+# zsh
+[ -f $HOME/.zprofile ] && file_exists_error "~/.zprofile" || [ ln -s $DOTFILES/zsh/.zprofile $HOME/.zprofile -a symlink_success ".zprofile"];
+[ -f $HOME/.zshrc ] && file_exists_error "~/.zshrc" || [ ln -s $DOTFILES/zsh/.zshrc $HOME/.zshrc -a symlink_success ".zshrc"];
+[ -f $HOME/.zshenv ] && file_exists_error "/.zshenv" || [ ln -s $DOTFILES/zsh/.zshenv $HOME/.zshenv -a symlink_success ".zshenv"];
+
+# tmux
+[ -f $HOME/.tmux.conf ] && file_exists_error "~/.tmux.conf" || [ ln -s $DOTFILES/tmux/.tmux.conf $HOME/.tmux.conf -a symlink_success ".tmux.conf"];
+
+# vim
+[ -f $HOME/.vimrc ] && file_exists_error "~/.vimrc" || [ ln -s $DOTFILES/vim/.vimrc $HOME/.vimrc -a symlink_success ".vimrc"];
+
+# git
+[ -f $HOME/.gitconfig ] && file_exists_error "~/.gitconfig" || [ ln -s $DOTFILES/git/.gitconfig $HOME/.gitconfig -a symlink_success ".gitconfig"];
+
+echo -e "\nComplete!";
