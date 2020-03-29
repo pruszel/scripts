@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#
+# Set up terminal environment
+#
+
+[ "$UID" -eq 0 ] || { echo "This script must be run as root."; exit 1;}
+
+# Install programs
+PROGRAMS="zsh vim tree git apache2 ranger docker docker-compose"
+echo -e "The following programs will be installed:\n\t$PROGRAMS\n"
+read -p "Press enter to continue.."
+apt -y update;
+apt -y install $PROGRAMS;
+
+# Create 'peter' user
+echo -e "\n\nUser 'peter' will be created"
+read -p "Press enter to continue.."
+[ "$(id -u peter)" -gt 0 ] && adduser peter;
+groupadd docker && groupadd git;
+usermod -aG sudo,www-data,docker,git peter;
+chsh -s /usr/bin/zsh peter;
+
+# Setup dotfiles
+echo -e "\n\nDotfiles will be downloaded and linked"
+read -p "Press enter to continue.."
+cd /home/peter;
+git clone https://github.com/peterlopez/scripts;
+git clone https://github.com/peterlopez/dotfiles;
+/home/peter/scripts/shell/setup-dotfiles "/home/peter/dotfiles";
+
+# Setup SSH access
+echo -e "\n\nSSH will be setup"
+read -p "Press enter to continue.."
+mkdir /home/peter/.ssh;
+touch /home/peter/.ssh/authorized_keys;
+chown peter:peter -R /home/peter/.ssh;
+chmod 700 /home/peter/.ssh && chmod 600 /home/peter/.ssh/authorized_keys;
+cat /home/peter/dotfiles/ssh/id_rsa.pub > /home/peter/.ssh/authorized_keys;
