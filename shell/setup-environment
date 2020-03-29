@@ -24,8 +24,10 @@ chsh -s /usr/bin/zsh peter;
 echo -e "\n\nDotfiles will be downloaded and linked"
 read -p "Press enter to continue.."
 cd /home/peter;
-git clone https://github.com/peterlopez/scripts;
-git clone https://github.com/peterlopez/dotfiles;
+git clone https://github.com/peterlopez/scripts /home/peter;
+chown peter:peter -R /home/peter/scripts;
+git clone https://github.com/peterlopez/dotfiles /home/peter;
+chwon peter:peter -R /home/peter/dotfiles
 /home/peter/scripts/shell/setup-dotfiles "/home/peter/dotfiles";
 
 # Setup SSH access
