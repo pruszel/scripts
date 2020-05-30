@@ -1,39 +1,60 @@
 #!/usr/bin/env ruby
 #
-# Deploy website files from a bare Git repository
+# Deploys all files from a bare Git repository (git init --bare)
+# to DEPLOY_PATH given a git branch matching DEPLOY_BRANCH
+#
+# SETUP:
+#   - DEPLOY_PATH must be initalized as a regular git repo with a work tree
+#     (i.e. run `git init` there first)
 #
 # USAGE
-# 	1. put this executable in a bare Git repository's hooks/ directory
-#   2. this file must be named 'post-receive' in order for it to be run after a git commit is received
-#   3. specify in this file which branch should be deployed
+# 	1. put this file in a bare git repo's `hooks/` directory
+#   2. set DEPLOY_BRANCH
+#   3. set DEPLOY_PATH
 #
 # IMPORTANT:
-# 	the name of the directory with the Git repo 
-# 	and the name of the directory in /var/www/ must MATCH
-# 	ex. this directory: 	/home/git/google.com
-#       must have matching: /var/www/google.com
-#
+#   - this file must be named 'post-receive'
+#   - this file must be executable by user running git
+
 
 # TODO - specify which branch should be deployed
-DEPLOY_BRANCH = "master"
+DEPLOY_BRANCH = "test"
+
+# TODO - specify where files should be deployed to
+DEPLOY_PATH = "/srv/burlingameengineers.com"
+
+# -----------------------
 
 # read args from STDIN: "from_commit, to_commit, branch_name"
 from, to, branch = ARGF.read.split " "
 
 # only deploy specified branch
-unless (branch == DEPLOY_BRANCH)
-    puts "Received ref(#{to}) on branch '#{branch}'."
-    exit
+unless (branch == "refs/heads/"+DEPLOY_BRANCH)
+  puts "!~!~!~!~!~!~!~!~!~!~!"
+  puts "    Received ref(#{to}) on branch '#{branch}'."
+  puts "    Warning! This branch will not be deployed."
+  puts "!~!~!~!~!~!~!~!~!~!~!"
+  exit
 end
 
-# get destination directory for deploying files
-dirname = File.basename(File.expand_path("../", Dir.pwd))
-dest_dir = File.expand_path("/var/www/#{dirname}")
-unless Dir.exists?(dest_dir)
-	puts "Deployment failed! Destination directory '#{dest_dir}' does not exist."
-	exit 1
+# use the following code below to set DEPLOY_PATH
+# to be based on curren't directory's name
+#
+# dirname = File.basename(File.expand_path("../", Dir.pwd))
+
+unless Dir.exists?(DEPLOY_PATH)
+  puts "!~!~!~!~!~!~!~!~!~!~!"
+  puts "    FAILED Deployment of ref(#{to}) to branch '#{branch}'!"
+  puts "    Check that the directory set by 'DEPLOY_PATH' exists in hooks/post-receive."
+  puts "!~!~!~!~!~!~!~!~!~!~!"
+  exit 1
 end
+
+puts "===================="
+puts "    Deploying ref #{to} on branch '#{DEPLOY_BRANCH}' to #{DEPLOY_PATH}..."
 
 # deploy files
-`GIT_WORK_TREE="#{dest_dir}" git checkout -f #{DEPLOY_BRANCH}`
-puts "Deployed #{DEPLOY_BRANCH} ref(#{to}) to '#{dest_dir}'"
+# by checking out branch with `--work-tree` arg
+`git --work-tree=#{DEPLOY_PATH} checkout -f #{DEPLOY_BRANCH}`
+
+puts "===================="
