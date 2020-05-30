@@ -1,36 +1,54 @@
 #!/usr/bin/env bash
 #
 # Set up terminal environment
-#
+# on a new server or computer
 
 [ "$UID" -eq 0 ] || { echo "This script must be run as root."; exit 1;}
 
-# Install programs
-PROGRAMS="zsh vim tree git apache2 ranger docker docker-compose"
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#     Install programs
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROGRAMS="zsh vim git docker docker-compose"
+TOOLS="nmap tree ranger wget gcc g++ clang"
+LANGUAGES="ruby python3" # TODO add PHP and Go
+
 echo -e "The following programs will be installed:\n\t$PROGRAMS\n"
 read -p "Press enter to continue.."
-apt -y update;
-apt -y install $PROGRAMS;
 
-# Create 'peter' user
+apt -y update;
+apt -y install "$PROGRAMS $TOOLS $LANGUAGES";
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#     Create 'peter' user
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo -e "\n\nUser 'peter' will be created"
 read -p "Press enter to continue.."
 [ "$(id -u peter)" -gt 0 ] && adduser peter;
+# add peter to docker and git groups
 groupadd docker && groupadd git;
 usermod -aG sudo,www-data,docker,git peter;
 chsh -s /usr/bin/zsh peter;
 
-# Setup dotfiles
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#     Create 'peter' user
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo -e "\n\nDotfiles will be downloaded and linked"
 read -p "Press enter to continue.."
 cd /home/peter;
-git clone https://github.com/peterlopez/scripts /home/peter;
+git clone https://github.com/peterlopez/scripts;
+git clone https://github.com/peterlopez/dotfiles 
 chown peter:peter -R /home/peter/scripts;
-git clone https://github.com/peterlopez/dotfiles /home/peter;
 chwon peter:peter -R /home/peter/dotfiles
+
+# run dotfiles setup script
 /home/peter/scripts/shell/setup-dotfiles "/home/peter/dotfiles";
 
-# Setup SSH access
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#     Setup SSH access
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo -e "\n\nSSH will be setup"
 read -p "Press enter to continue.."
 mkdir /home/peter/.ssh;
