@@ -1,0 +1,14 @@
+version: '3'
+services:
+  node:
+    build: .
+    working_dir: /home/node/app/app/server
+    environment:
+      - NODE_ENV=production
+    # volumes:
+    #  - ./:/home/node/app
+    command: "node index.js"
+    ports:
+      - "120:80"
+    restart: on-failure
+
