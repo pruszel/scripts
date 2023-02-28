@@ -1,3 +1,3 @@
-# [peterlopez / scripts](https://github.com/peterlopez/scripts)
+# [peterlopez/scripts](https://github.com/peterlopez/scripts)
 
-My collection of scripts for the shell, web, and other programs
+My collection of scripts for the shell and other programs
