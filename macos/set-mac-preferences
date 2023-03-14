@@ -1,0 +1,95 @@
+# inspired by https://github.com/paulirish/dotfiles
+
+# Dock
+defaults write com.apple.dock "autohide-time-modifier" -float "0"
+defaults read com.apple.dock "autohide" -bool "true"
+defaults write com.apple.dock "show-recents" -bool "false" 
+defaults write com.apple.dock "tilesize" -int "69"
+defaults write com.apple.dock "mru-spaces" -bool "false"
+
+# Disable “natural” (Lion-style) scrolling
+defaults write NSGlobalDomain com.apple.swipescrolldirection -bool "false"
+
+# Finder
+
+# Show all filename extensions
+defaults write com.apple.finder "AppleShowAllFiles" -bool "true"
+
+defaults write com.apple.finder "ShowPathbar" -bool "true"
+
+defaults write com.apple.finder "FXPreferredViewStyle" -string "clmv"
+
+# Disable the warning when changing a file extension
+defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool "false"
+
+# Disable the warning before emptying the Trash
+defaults write com.apple.finder "WarnOnEmptyTrash" -float "0"
+
+# Empty Trash securely by default
+defaults write com.apple.finder "EmptyTrashSecurely" -bool "true"
+
+# Screenshots
+defaults write com.apple.screencapture "disable-shadow" -bool "true" 
+
+#defaults write com.apple.universalaccess "showWindowTitlebarIcons" -bool "true"
+
+# enable key repeat for press and hold
+defaults write NSGlobalDomain "ApplePressAndHoldEnabled" -bool "false"
+
+# fast key repeat rate
+defaults write NSGlobalDomain "KeyRepeat" -int "1"
+
+# short delay until key repeat
+defaults write NSGlobalDomain "InitialKeyRepeat" -int "20"
+
+# Enable full keyboard access for all controls
+# (e.g. enable Tab in modal dialogs)
+defaults write NSGlobalDomain "AppleKeyboardUIMode" -int "3"
+
+# Default save directory
+defaults write NSGlobalDomain "NSDocumentSaveNewDocumentsToCloud" -bool "false" 
+defaults write NSGlobalDomain "NSToolbarTitleViewRolloverDelay" -float "0"
+
+# Show the ~/Library folder
+chflags nohidden ~/Library
+
+# Show the /Volumes folder
+sudo chflags nohidden /Volumes
+
+# Hot corners
+#
+# corner values:
+#  0: no-op
+#  2: Mission Control
+#  3: Show application windows
+#  4: Desktop
+#  5: Start screen saver
+#  6: Disable screen saver
+#  7: Dashboard
+# 10: Put display to sleep
+# 11: Launchpad
+# 12: Notification Center
+# 
+# modifier values:
+# 1048576: Command
+
+# Top left
+defaults write com.apple.dock wvous-tl-corner -int 10
+defaults write com.apple.dock wvous-tl-modifier -int 1048576
+
+# Top right
+defaults write com.apple.dock wvous-tr-corner -int 4
+defaults write com.apple.dock wvous-tr-modifier -int 1048576
+
+# Bottom left
+defaults write com.apple.dock wvous-bl-corner -int 0
+defaults write com.apple.dock wvous-bl-modifier -int 0
+
+# Bottom right
+defaults write com.apple.dock wvous-br-corner -int 0
+defaults write com.apple.dock wvous-br-modifier -int 0
+
+# Restart
+killall Dock
+killall Finder
+killall SystemUIServer

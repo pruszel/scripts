@@ -1,0 +1,17 @@
+# Set up dotfiles
+~/scripts/shell/setup-dotfiles ~/dotfiles
+
+# Set macOS preferences
+~/scripts/macos/set-mac-preferences
+
+# Install Xcode command line tools
+xcode-select --install
+
+# Install Homebrew packages
+brew bundle install
+
+# Pause to copy SSH key
+read -s -k '?Copy SSH key to ~/.ssh/id_rsa then press any key to continue.'
+
+# Set up SSH key
+ssh-add --apple-use-keychain ~/.ssh/id_rsa
