@@ -6,47 +6,42 @@
 #	$ setup-dotfiles /path/to/dotfiles
 #
 
-DOTFILES="$1";
-[ -z "$DOTFILES" ] && echo -e "Error: Missing argument\nUsage:\n\t$ setup-dotfiles /path/to/dotfiles" && exit 1;
-[ ! -d "$DOTFILES" ] && echo "Error: dotfiles directory \"$DOTFILES\" does not exist." && exit 1;
+DOTFILES="$1"
+[ -z "$DOTFILES" ] && echo -e "Error: Missing argument\nUsage:\n\t$ setup-dotfiles /path/to/dotfiles" && exit 1
+[ ! -d "$DOTFILES" ] && echo "Error: dotfiles directory \"$DOTFILES\" does not exist." && exit 1
 
 setup_symlink() {
     SRC=$1;
     DEST=$2;
     if [ -e $DEST ]; then
-        echo "$DEST dotfile already exists, skipping it. Delete the file and re-run script to setup symlink.";
+        echo "$DEST dotfile already exists, skipping it. Delete the file and re-run script to setup symlink."
         return 1;
     fi
-    ln -s "$SRC" "$DEST" && echo "Symlink created for $DEST.";
+    ln -s "$SRC" "$DEST" && echo "Symlink created for $DEST."
 }
 
-echo -e "Creating symlinks for dotfiles in $DOTFILES..\n";
+echo -e "Creating symlinks for dotfiles in $DOTFILES..\n"
 
-mkdir -v "$HOME/.config";
+mkdir -v "$HOME/.config"
 
-setup_symlink "$DOTFILES/.hushlogin" "$HOME/.hushlogin";
+setup_symlink "$DOTFILES/.hushlogin" "$HOME/.hushlogin"
 
 # zsh
-setup_symlink "$DOTFILES/zsh/work.zprofile" "$HOME/.zprofile";
-setup_symlink "$DOTFILES/zsh/work.zshrc" "$HOME/.zshrc";
-setup_symlink "$DOTFILES/zsh/work.zshenv" "$HOME/.zshenv";
-
-# Homebrew
-setup_symlink "$DOTFILES/brew/Brewfile" "$HOME/Brewfile";
+setup_symlink "$DOTFILES/zsh/work.zprofile" "$HOME/.zprofile"
+setup_symlink "$DOTFILES/zsh/work.zshrc" "$HOME/.zshrc"
+setup_symlink "$DOTFILES/zsh/work.zshenv" "$HOME/.zshenv"
 
 # vim
-setup_symlink "$DOTFILES/vim/.vimrc" "$HOME/.vimrc";
+setup_symlink "$DOTFILES/vim/.vimrc" "$HOME/.vimrc"
 
 # ranger
-setup_symlink "$DOTFILES/ranger/rc.conf" "$HOME/.config/ranger/rc.conf";
+setup_symlink "$DOTFILES/ranger/rc.conf" "$HOME/.config/ranger/rc.conf"
 
 # tmux
-setup_symlink "$DOTFILES/tmux/.tmux.conf" "$HOME/.tmux.conf";
+setup_symlink "$DOTFILES/tmux/.tmux.conf" "$HOME/.tmux.conf"
 
 # git
-cp -n "$DOTFILES/git/.gitconfig" "$HOME/.gitconfig";
+cp -n "$DOTFILES/git/.gitconfig" "$HOME/.gitconfig"
 
 # Linux
-setup_symlink "$DOTFILES/.inputrc" "$HOME/.inputrc";
-
-echo -e "\nComplete!";
+setup_symlink "$DOTFILES/.inputrc" "$HOME/.inputrc"
