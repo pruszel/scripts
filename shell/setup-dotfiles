@@ -14,7 +14,7 @@ setup_symlink() {
     SRC=$1;
     DEST=$2;
     if [ -e $DEST ]; then
-        echo "$DEST dotfile already exists, skipping it. Delete the file and re-run script to setup symlink."
+        echo "$DEST already exists, skipping it. Delete the file and re-run script to setup symlink."
         return 1;
     fi
     ln -s "$SRC" "$DEST" && echo "Symlink created for $DEST."
@@ -22,7 +22,7 @@ setup_symlink() {
 
 echo -e "Creating symlinks for dotfiles in $DOTFILES..\n"
 
-mkdir -v "$HOME/.config"
+[ ! -d "$HOME/.config" ] && mkdir -v "$HOME/.config"
 
 setup_symlink "$DOTFILES/.hushlogin" "$HOME/.hushlogin"
 
@@ -33,6 +33,8 @@ setup_symlink "$DOTFILES/zsh/work.zshenv" "$HOME/.zshenv"
 
 # vim
 setup_symlink "$DOTFILES/vim/.vimrc" "$HOME/.vimrc"
+[ ! -d "$HOME/.vim/colors" ] && mkdir -pv "$HOME/.vim/colors"
+setup_symlink "$DOTFILES/vim/colors/monokai.vim" "$HOME/.vim/colors/monokai.vim"
 
 # ranger
 setup_symlink "$DOTFILES/ranger/rc.conf" "$HOME/.config/ranger/rc.conf"
