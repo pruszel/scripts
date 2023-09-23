@@ -1,5 +1,16 @@
 # inspired by https://github.com/paulirish/dotfiles
 
+# TODO
+# Spotlight shortcut
+# Terminal shortcut (Command + Shift + T)
+# Tap to click
+# map Caps to Escape
+# Open at login: Slack, Chrome, 
+# Turn display off on power: never
+# Menu bar?
+# Group windows by application in Mission Control
+# file assocations: .json, .txt, .js, etc.
+
 # Dock
 defaults write com.apple.dock "autohide-time-modifier" -float "0"
 defaults read com.apple.dock "autohide" -bool "true"
