@@ -27,9 +27,10 @@ echo -e "Creating symlinks for dotfiles in $DOTFILES..\n"
 setup_symlink "$DOTFILES/.hushlogin" "$HOME/.hushlogin"
 
 # zsh
-setup_symlink "$DOTFILES/zsh/work.zprofile" "$HOME/.zprofile"
-setup_symlink "$DOTFILES/zsh/work.zshrc" "$HOME/.zshrc"
-setup_symlink "$DOTFILES/zsh/work.zshenv" "$HOME/.zshenv"
+setup_symlink "$DOTFILES/zsh/.zshenv" "$HOME/.zshenv"
+setup_symlink "$DOTFILES/zsh/.zprofile" "$HOME/.zprofile"
+setup_symlink "$DOTFILES/zsh/.zshrc" "$HOME/.zshrc"
+setup_symlink "$DOTFILES/zsh/.zsh_aliases" "$HOME/.zsh_aliases"
 
 # vim
 setup_symlink "$DOTFILES/vim/.vimrc" "$HOME/.vimrc"
