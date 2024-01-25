@@ -32,6 +32,9 @@ echo "$(separator) Set up dotfiles"
 echo "$(separator) Set macOS preferences"
 ~/scripts/shell/set-mac-preferences
 
+echo "$(separator) Set Mac file associations"
+~/scripts/shell/set-mac-file-associations
+
 # Install Oh My Zsh
 [ ! -d "$HOME/.oh-my-zsh" ] && { echo "$(separator) Install Oh My Zsh"; sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"; }
 

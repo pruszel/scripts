@@ -1,0 +1,35 @@
+#!/bin/zsh
+
+# Check if 'duti' is installed
+if ! command -v duti &> /dev/null
+then
+    echo "duti command not found. Please install duti and try again."
+    exit 1
+fi
+
+# Define the bundle identifiers for the applications
+sublime_text_bundle_id="com.sublimetext.4"
+chrome_bundle_id="com.google.Chrome"
+
+# Define file extensions for Sublime Text
+sublime_extensions=("json" "py" "rb" "js" "css" "scss" "txt" "ts" "tsx" "yml" "md" "php" "sql" "sh" "lock" "svg" "js.map")
+
+# Define file extensions for Google Chrome
+chrome_extensions=("html")
+
+# Function to set default application for a list of file extensions
+set_default_app() {
+    local bundle_id=$1
+    shift
+    local extensions=("$@")
+
+    for ext in $extensions; do
+        duti -s $bundle_id .$ext all
+    done
+}
+
+# Set Sublime Text as the default application for its file types
+set_default_app $sublime_text_bundle_id $sublime_extensions
+
+# Set Google Chrome as the default application for its file types
+set_default_app $chrome_bundle_id $chrome_extensions
