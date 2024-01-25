@@ -1,10 +1,9 @@
 #!/bin/bash
-#
+
 # Setup symlinks for dotfiles
 #
 # USAGE
 #	$ setup-dotfiles /path/to/dotfiles
-#
 
 DOTFILES="$1"
 [ -z "$DOTFILES" ] && echo -e "Error: Missing argument\nUsage:\n\t$ setup-dotfiles /path/to/dotfiles" && exit 1
@@ -41,8 +40,8 @@ setup_symlink "$DOTFILES/vim/.vimrc" "$HOME/.vimrc"
 setup_symlink "$DOTFILES/vim/colors/monokai.vim" "$HOME/.vim/colors/monokai.vim"
 
 # Sublime Text
-setup_symlink "$DOTFILES/sublime-text/Preferences.sublime-settings" "$HOME/~/Library/Application\ Support/Sublime\ Text/Packages/User/Preferences.sublime-settings"
-setup_symlink "$DOTFILES/sublime-text/Package\ Control.sublime-settings" "$HOME/~/Library/Application\ Support/Sublime\ Text/Packages/User/Package\ Control.sublime-settings"
+setup_symlink "$DOTFILES/sublime/Preferences.sublime-settings" "$HOME/Library/Application Support/Sublime Text/Packages/User/Preferences.sublime-settings"
+setup_symlink "$DOTFILES/sublime/Package Control.sublime-settings" "$HOME/Library/Application Support/Sublime Text/Packages/User/Package Control.sublime-settings"
 
 # ranger
 setup_symlink "$DOTFILES/ranger/rc.conf" "$HOME/.config/ranger/rc.conf"
