@@ -1,0 +1,39 @@
+#!/bin/zsh
+
+# Install Xcode command line tools
+xcode-select --install
+
+# Install Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install Homebrew packages
+HOMEBREW_CASK_OPTS="--appdir=/Applications" brew bundle --file=/Users/peter/dotfiles/brew/system/Brewfile
+HOMEBREW_CASK_OPTS="--appdir=/Users/peter/Applications" brew bundle --file=/Users/peter/dotfiles/brew/user/Brewfile
+
+# Set up GitHub CLI
+gh auth login
+gh auth setup-git
+
+# Clone scripts
+gh repo clone peterlopez/scripts ~/scripts
+
+# Clone dotfiles
+gh repo clone peterlopez/dotfiles ~/dotfiles
+
+# Set up dotfiles
+~/scripts/shell/setup-dotfiles ~/dotfiles
+
+# Set macOS preferences
+~/scripts/shell/set-mac-preferences
+
+# Install Oh My Zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Set up keychain for SSH key
+SSH_KEY_NAME="id_ecdsa"
+if [ ! -f ~/.ssh/$SSH_KEY_NAME ]; then
+    echo "Error: unable to setup keychain for SSH key. Make sure the file at ~/.ssh/$SSH_KEY_NAME exists."
+    exit 1
+else
+    ssh-add --apple-use-keychain ~/.ssh/$SSH_KEY_NAME
+fi
