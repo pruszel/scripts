@@ -13,7 +13,7 @@
 # ---
 # Dock preferences
 
-defaults read com.apple.dock "autohide" -bool "true"
+defaults write com.apple.dock "autohide" -bool "true"
 defaults write com.apple.dock "autohide-time-modifier" -float "0"
 defaults write com.apple.dock "show-recents" -bool "false" 
 defaults write com.apple.dock "tilesize" -int "69"
@@ -34,17 +34,10 @@ defaults write NSGlobalDomain "NSDocumentSaveNewDocumentsToCloud" -bool "false"
 # Show the ~/Library folder
 chflags nohidden ~/Library
 # Show the /Volumes folder
-sudo chflags nohidden /Volumes
+chflags nohidden /Volumes
 # Set the ~/Downloads folder to group by date
-osascript <<EOF
-tell application "Finder"
-    open folder "Downloads" of home
-    tell folder "Downloads" of home
-        set current view to list view
-        set the sort column of the list view options of window 1 to the date added column
-    end tell
-end tell
-EOF
+set_downloads_sort_script="/Users/peter/scripts/applescript/set_downloads_sort.scpt"
+[[ -f "$set_downloads_sort_script" ]] && osascript "$set_downloads_sort_script"
 
 # ---
 # Scrolling, Trackpad, and Keyboard preferences
@@ -58,7 +51,8 @@ defaults write NSGlobalDomain "KeyRepeat" -int "1"
 # short delay until key repeat
 defaults write NSGlobalDomain "InitialKeyRepeat" -int "20"
 # Map Caps Lock key to Escape function
-hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}'
+# FIXME
+# hidutil property --set '{\"UserKeyMapping\":[{\"HIDKeyboardModifierMappingSrc\":0x700000039,\"HIDKeyboardModifierMappingDst\":0x700000029}]}'
 # enable key repeat for press and hold
 defaults write NSGlobalDomain "ApplePressAndHoldEnabled" -bool "false"
 # Enable full keyboard access for all controls
