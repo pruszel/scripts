@@ -1,5 +1,0 @@
-#! /usr/bin/env zsh
-#
-# Cleans up (moves to trash) files in ~/Downloads folder
-#
-cd /Users/peter/Downloads && find * -exec /usr/local/bin/rmtrash '{}' \;

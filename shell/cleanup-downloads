@@ -1,0 +1,3 @@
+#! /usr/bin/env zsh
+# Clean up the ~/Downloads folder by moving files to the trash
+cd ~/Downloads && find * -exec /usr/local/bin/rmtrash '{}' \;
