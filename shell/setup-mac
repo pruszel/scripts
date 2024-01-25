@@ -1,4 +1,6 @@
 #!/bin/zsh
+# 
+# Set up a macOS development environment
 
 # Install Xcode command line tools
 xcode-select --install
@@ -30,10 +32,10 @@ gh repo clone peterlopez/dotfiles ~/dotfiles
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Set up keychain for SSH key
-SSH_KEY_NAME="id_ecdsa"
-if [ ! -f ~/.ssh/$SSH_KEY_NAME ]; then
-    echo "Error: unable to setup keychain for SSH key. Make sure the file at ~/.ssh/$SSH_KEY_NAME exists."
-    exit 1
-else
-    ssh-add --apple-use-keychain ~/.ssh/$SSH_KEY_NAME
-fi
+# SSH_KEY_NAME="id_rsa"
+# if [ ! -f ~/.ssh/$SSH_KEY_NAME ]; then
+#     echo "Error: unable to setup keychain for SSH key. Make sure the file at ~/.ssh/$SSH_KEY_NAME exists."
+#     exit 1
+# else
+#     ssh-add --apple-use-keychain ~/.ssh/$SSH_KEY_NAME
+# fi
