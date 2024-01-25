@@ -15,19 +15,16 @@ setup_symlink() {
     DEST=$2;
     if [ -e "$DEST" ]; then
         if [ "$(readlink -- "$DEST")" = "$SRC" ]; then
-            echo "Correct symlink already exists for $DEST."
             return 0;
         elif [ ! -L "$DEST" ]; then
-            echo "File already exists at $DEST. Renaming to $DEST.bak."
+            echo "File already exists at $DEST. Renaming to $DEST.bak then setting up symlink."
             mv -v "$DEST" "$DEST.bak"
         fi
     fi
     ln -s "$SRC" "$DEST" && echo "Symlink created for $DEST."
 }
 
-echo -e "Creating symlinks for dotfiles in $DOTFILES..\n"
-
-[ ! -d "$HOME/.config" ] && mkdir -v "$HOME/.config"
+[ ! -d "$HOME/.config" ] && mkdir "$HOME/.config"
 
 # ssh
 setup_symlink "$DOTFILES/ssh/config" "$HOME/.ssh/config"
@@ -40,8 +37,12 @@ setup_symlink "$DOTFILES/zsh/.zsh_aliases" "$HOME/.zsh_aliases"
 
 # vim
 setup_symlink "$DOTFILES/vim/.vimrc" "$HOME/.vimrc"
-[ ! -d "$HOME/.vim/colors" ] && mkdir -pv "$HOME/.vim/colors"
+[ ! -d "$HOME/.vim/colors" ] && mkdir -p "$HOME/.vim/colors"
 setup_symlink "$DOTFILES/vim/colors/monokai.vim" "$HOME/.vim/colors/monokai.vim"
+
+# Sublime Text
+setup_symlink "$DOTFILES/sublime-text/Preferences.sublime-settings" "$HOME/~/Library/Application\ Support/Sublime\ Text/Packages/User/Preferences.sublime-settings"
+setup_symlink "$DOTFILES/sublime-text/Package\ Control.sublime-settings" "$HOME/~/Library/Application\ Support/Sublime\ Text/Packages/User/Package\ Control.sublime-settings"
 
 # ranger
 setup_symlink "$DOTFILES/ranger/rc.conf" "$HOME/.config/ranger/rc.conf"
