@@ -1,37 +1,41 @@
 #!/bin/zsh
-# 
+
 # Set up a macOS development environment
 
+separator() {
+  echo "\n\n------------------\n"
+}
+
 # Install Xcode command line tools
-xcode-select --install
+xcode-select -p &>/dev/null || { echo "$(separator) Install Xcode command line tools"; xcode-select --install; }
 
 # Install Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+command -v brew &> /dev/null || { echo "$(separator) Install Homebrew"; /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; }
 
-# Install Homebrew packages
+echo "$(separator) Install Homebrew packages"
 HOMEBREW_CASK_OPTS="--appdir=/Applications" brew bundle --file=/Users/peter/dotfiles/brew/system/Brewfile
 HOMEBREW_CASK_OPTS="--appdir=/Users/peter/Applications" brew bundle --file=/Users/peter/dotfiles/brew/user/Brewfile
 
-# Set up GitHub CLI
+echo "$(separator) Set up GitHub CLI"
 gh auth login
 gh auth setup-git
 
-# Clone scripts
+echo "$(separator) Clone scripts"
 gh repo clone peterlopez/scripts ~/scripts
 
-# Clone dotfiles
+echo "$(separator) Clone dotfiles"
 gh repo clone peterlopez/dotfiles ~/dotfiles
 
-# Set up dotfiles
+echo "$(separator) Set up dotfiles"
 ~/scripts/shell/setup-dotfiles ~/dotfiles
 
-# Set macOS preferences
+echo "$(separator) Set macOS preferences"
 ~/scripts/shell/set-mac-preferences
 
 # Install Oh My Zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+[ ! -d "$HOME/.oh-my-zsh" ] && { echo "$(separator) Install Oh My Zsh"; sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"; }
 
-# Set up keychain for SSH key
+# echo "$(separator) Set up keychain for SSH key"
 # SSH_KEY_NAME="id_rsa"
 # if [ ! -f ~/.ssh/$SSH_KEY_NAME ]; then
 #     echo "Error: unable to setup keychain for SSH key. Make sure the file at ~/.ssh/$SSH_KEY_NAME exists."
@@ -39,3 +43,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # else
 #     ssh-add --apple-use-keychain ~/.ssh/$SSH_KEY_NAME
 # fi
+
+# Reboot
+read -p "Restart? (y/n) " confirm && [ "$confirm" = "y" ] && sudo shutdown -r now
