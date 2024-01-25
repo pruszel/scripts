@@ -1,6 +1,10 @@
+#!/bin/zsh
+# 
+# Configure macOS preferences
 # inspired by https://github.com/paulirish/dotfiles
-
+# 
 # TODO
+# ---
 # Spotlight shortcut
 # Terminal shortcut (Command + Shift + T)
 # Tap to click
