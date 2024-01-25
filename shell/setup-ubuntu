@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-#
-# Set up terminal environment
-# on a new server or computer
+
+# Set up an Ubuntu environment
 
 [ "$UID" -eq 0 ] || { echo "This script must be run as root."; exit 1;}
 
