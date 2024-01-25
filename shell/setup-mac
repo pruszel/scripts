@@ -16,15 +16,14 @@ echo "$(separator) Install Homebrew packages"
 HOMEBREW_CASK_OPTS="--appdir=/Applications" brew bundle --file=/Users/peter/dotfiles/brew/system/Brewfile
 HOMEBREW_CASK_OPTS="--appdir=/Users/peter/Applications" brew bundle --file=/Users/peter/dotfiles/brew/user/Brewfile
 
-echo "$(separator) Set up GitHub CLI"
-gh auth login
-gh auth setup-git
+if ! gh auth status &> /dev/null; then
+    echo "$(separator) Set up GitHub CLI"
+    gh auth login
+    gh auth setup-git
+fi
 
-echo "$(separator) Clone scripts"
-gh repo clone peterlopez/scripts ~/scripts
-
-echo "$(separator) Clone dotfiles"
-gh repo clone peterlopez/dotfiles ~/dotfiles
+[ ! -d "$HOME/scripts" ] && echo "$(separator) Clone scripts" && gh repo clone peterlopez/scripts ~/scripts
+[ ! -d "$HOME/dotfiles" ] && echo "$(separator) Clone dotfiles" && gh repo clone peterlopez/dotfiles ~/dotfiles
 
 echo "$(separator) Set up dotfiles"
 ~/scripts/shell/setup-dotfiles ~/dotfiles
@@ -48,4 +47,6 @@ echo "$(separator) Set Mac file associations"
 # fi
 
 # Reboot
-read -p "Restart? (y/n) " confirm && [ "$confirm" = "y" ] && sudo shutdown -r now
+echo "Restart? (y/n) \c"
+read confirm
+[ "$confirm" = "y" ] && shutdown -h now
