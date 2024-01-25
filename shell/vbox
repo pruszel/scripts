@@ -5,7 +5,7 @@ cat << HELPTEXT
 Wrapper for Virtual Box's VBoxManage API
 
 USAGE
-  vm {command} {VM name}
+  vbox {command} {VM name}
 
 COMMANDS
   start
