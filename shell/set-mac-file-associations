@@ -32,4 +32,4 @@ set_default_app() {
 set_default_app $sublime_text_bundle_id $sublime_extensions
 
 # Set Google Chrome as the default application for its file types
-set_default_app $chrome_bundle_id $chrome_extensions
+# set_default_app $chrome_bundle_id $chrome_extensions
