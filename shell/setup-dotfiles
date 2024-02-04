@@ -52,6 +52,7 @@ setup_symlink "$DOTFILES/zsh/tmux.plugin.zsh" "$HOME/.oh-my-zsh/custom/plugins/t
 
 # git
 cp -n "$DOTFILES/git/.gitconfig" "$HOME/.gitconfig"
+setup_symlink "$DOTFILES/git/.gitignore_global" "$HOME/.gitignore_global"
 
 # Linux
 setup_symlink "$DOTFILES/.inputrc" "$HOME/.inputrc"
