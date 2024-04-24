@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 # Set up a macOS development environment
 
@@ -12,18 +12,15 @@ xcode-select -p &>/dev/null || { echo "$(separator) Install Xcode command line t
 # Install Homebrew
 command -v brew &> /dev/null || { echo "$(separator) Install Homebrew"; /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; }
 
-echo "$(separator) Install Homebrew packages"
-HOMEBREW_CASK_OPTS="--appdir=/Applications" brew bundle --file=/Users/peter/dotfiles/brew/system/Brewfile
-HOMEBREW_CASK_OPTS="--appdir=/Users/peter/Applications" brew bundle --file=/Users/peter/dotfiles/brew/user/Brewfile
-
-if ! gh auth status &> /dev/null; then
-    echo "$(separator) Set up GitHub CLI"
-    gh auth login
-    gh auth setup-git
-fi
-
+# Clone dotfiles and scripts repos
 [ ! -d "$HOME/scripts" ] && echo "$(separator) Clone scripts" && gh repo clone peterlopez/scripts ~/scripts
 [ ! -d "$HOME/dotfiles" ] && echo "$(separator) Clone dotfiles" && gh repo clone peterlopez/dotfiles ~/dotfiles
+
+echo "$(separator) Install Homebrew packages"
+brew bundle install
+
+# Install Oh My Zsh (do before dotfiles)
+[ ! -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ] && { echo "$(separator) Install Oh My Zsh"; sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"; }
 
 echo "$(separator) Set up dotfiles"
 ~/scripts/shell/setup-dotfiles ~/dotfiles
@@ -34,8 +31,16 @@ echo "$(separator) Set macOS preferences"
 echo "$(separator) Set Mac file associations"
 ~/scripts/shell/set-mac-file-associations
 
-# Install Oh My Zsh
-[ ! -d "$HOME/.oh-my-zsh" ] && { echo "$(separator) Install Oh My Zsh"; sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"; }
+# Install GitHub CLI
+command -v gh &> /dev/null || { echo "$(separator) Install GitHub CLI"; brew install gh; }
+
+# Set up GitHub CLI
+if ! gh auth status &> /dev/null; then
+    echo "$(separator) Set up GitHub CLI"
+    gh auth login
+    gh auth setup-git
+fi
+
 
 # echo "$(separator) Set up keychain for SSH key"
 # SSH_KEY_NAME="id_rsa"
@@ -49,4 +54,4 @@ echo "$(separator) Set Mac file associations"
 # Reboot
 echo "Restart? (y/n) \c"
 read confirm
-[ "$confirm" = "y" ] && shutdown -h now
+[ "$confirm" = "y" ] && sudo shutdown -h now

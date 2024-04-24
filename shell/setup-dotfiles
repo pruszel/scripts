@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 # Setup symlinks for dotfiles
 #
@@ -12,18 +12,21 @@ DOTFILES="$1"
 setup_symlink() {
     SRC=$1;
     DEST=$2;
-    if [ -e "$DEST" ]; then
-        if [ "$(readlink -- "$DEST")" = "$SRC" ]; then
-            return 0;
-        elif [ ! -L "$DEST" ]; then
-            echo "File already exists at $DEST. Renaming to $DEST.bak then setting up symlink."
-            mv -v "$DEST" "$DEST.bak"
-        fi
-    fi
-    ln -s "$SRC" "$DEST" && echo "Symlink created for $DEST."
-}
 
-[ ! -d "$HOME/.config" ] && mkdir "$HOME/.config"
+    # Create the directories for DEST if they do not exist
+    if [ ! -d "$(dirname "$DEST")" ]; then
+        mkdir -p "$(dirname "$DEST")"
+    fi
+
+    if [ -e "$DEST" ] && [ ! -L "$DEST" ]; then
+        echo "File already exists at $DEST. Renaming to $DEST.bak then setting up symlink."
+        mv -v "$DEST" "$DEST.bak"
+    fi
+
+    if [ ! -e "$DEST" ] || [ "$(readlink -- "$DEST")" != "$SRC" ]; then
+        ln -s "$SRC" "$DEST" && echo "Symlink created for $DEST."
+    fi
+}
 
 # ssh
 setup_symlink "$DOTFILES/ssh/config" "$HOME/.ssh/config"
@@ -36,8 +39,10 @@ setup_symlink "$DOTFILES/zsh/.zsh_aliases" "$HOME/.zsh_aliases"
 
 # vim
 setup_symlink "$DOTFILES/vim/.vimrc" "$HOME/.vimrc"
-[ ! -d "$HOME/.vim/colors" ] && mkdir -p "$HOME/.vim/colors"
 setup_symlink "$DOTFILES/vim/colors/monokai.vim" "$HOME/.vim/colors/monokai.vim"
+
+# Homebrew
+setup_symlink "$DOTFILES/Brewfile" "$HOME/Brewfile"
 
 # Sublime Text
 setup_symlink "$DOTFILES/sublime/Preferences.sublime-settings" "$HOME/Library/Application Support/Sublime Text/Packages/User/Preferences.sublime-settings"
@@ -54,5 +59,5 @@ setup_symlink "$DOTFILES/zsh/tmux.plugin.zsh" "$HOME/.oh-my-zsh/custom/plugins/t
 cp -n "$DOTFILES/git/.gitconfig" "$HOME/.gitconfig"
 setup_symlink "$DOTFILES/git/.gitignore_global" "$HOME/.gitignore_global"
 
-# Linux
+# keyboard config
 setup_symlink "$DOTFILES/.inputrc" "$HOME/.inputrc"
