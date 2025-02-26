@@ -3,6 +3,9 @@
 # Configure macOS preferences
 # inspired by https://github.com/paulirish/dotfiles
 
+# Prevent startup when opening the lid or connecting to power
+sudo nvram BootPreference=%00
+
 # ---
 # Dock preferences
 
@@ -40,7 +43,7 @@ defaults write NSGlobalDomain com.apple.swipescrolldirection -bool "false"
 # Remove the default Spotlight shortcut Command + Space
 # defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "<dict><key>enabled</key><false/></dict>"
 # Speed up key repeat rate
-defaults write NSGlobalDomain "KeyRepeat" -int "0"
+defaults write NSGlobalDomain "KeyRepeat" -int "2"
 # short delay until key repeat
 defaults write NSGlobalDomain "InitialKeyRepeat" -int "20"
 # Map Caps Lock key to Escape function
